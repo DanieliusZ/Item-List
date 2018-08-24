@@ -1,0 +1,6 @@
+<h2 mat-dialog-title>Are you sure you want to move this request to archive?</h2>
+<!-- <mat-dialog-content>{{data}}</mat-dialog-content> -->
+<mat-dialog-actions>
+  <button class="btn btn-danger mx-2 px-5" [mat-dialog-close]="true" (click)="moveToArchive(data)">Yes</button>
+  <button class="btn btn-warning mx-2 px-5" mat-dialog-close>No</button>
+</mat-dialog-actions>

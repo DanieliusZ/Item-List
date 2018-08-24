@@ -1,0 +1,119 @@
+<!-- <button (click)="showIt()">Click it</button> -->
+<!-- <ul>
+  <li *ngFor="let item of requestList | async">
+     {{ item | json }}
+  </li>
+</ul> -->
+<div class="container">
+  <!-- <div><label for="showResponded">Include responed</label><input type="checkbox" name="showResponded" value=true></div> -->
+
+  <span style="float:right">
+      <button class="btn btn-secondary" (click)="showArchived = false">Active</button>
+      <button class="btn btn-dark" (click)="showArchived = true">Archive</button>
+  </span>
+  <!-- <div class="fontChange">
+    <label for="overdueDuration">Select overdue duration</label>
+    <mat-slider
+      name="overdueDuration"
+      max=50
+      min=1
+      thumb-label="thumbLabel"
+      [(ngModel)]="term">
+    </mat-slider>
+  </div> -->
+  <div *ngIf="((requestList | async)?.length!=0)&&!showArchived">
+    <h3>List of active requests</h3>
+    <div>
+      <mat-checkbox name="showResponded" [(ngModel)]="showResponded" value=true>Include Responded</mat-checkbox>
+      <mat-checkbox name="showOverdue" [(ngModel)]="showOverdue" value=true>Show Only Overdue</mat-checkbox>
+    </div>
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Request date</th>
+          <th>Buyer</th>
+          <th>Item of interest</th>
+          <th>Supplier</th>
+          <th>Order date</th>
+          <th>Tracking number</th>
+          <th>Notes</th>
+          <th>Overdue duration</th>
+          <th>Actions</th>
+          <!-- <th></th> -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let t of requestList | async" >
+        <tr *ngIf="((!t.Responded||showResponded)&&!showOverdue)||(showOverdue&&isOverdue(t.OrderDate, t.OverdueDuration)&&!t.Responded)" class="notResponded" [class.responded]="t.Responded" [class.overdue]="isOverdue(t.OrderDate, t.OverdueDuration)&&!t.Responded">
+          <td>{{ t.Date }}</td>
+          <td>{{ t.Buyer }}</td>
+          <td>{{ t.Item }}</td>
+          <td>{{ t.Supplier }}</td>
+          <td>{{ t.OrderDate }}</td>
+          <td>{{ t.TrackingNumber }}</td>
+          <td>{{ t.Notes }}</td>
+          <td>{{ t.OverdueDuration}}</td>
+          <!-- <td *ngIf="!t.Responded||showResponded"><input type="checkbox" name="Responded" value=true></td> -->
+          <!-- <td>
+            <button class="btn btn-success btn-sm" [hidden]="t.Responded" (click)="markResponded(t)">Mark as responded</button>
+            <button class="btn btn-warning btn-sm" [hidden]="!t.Responded" (click)="markNotResponded(t)">Mark not responded</button>
+          </td> -->
+          <td>
+              <i [hidden]="t.Responded" (click)="markResponded(t)" class="fa fa-check" matTooltip="Mark as responded"></i>
+              <i [hidden]="!t.Responded" (click)="markNotResponded(t)" class="fa fa-unlock" matTooltip="Mark as not responded"></i>
+              <i [hidden]="requestToEdit?.key === t?.key" (click)="editRequest(t)" class="fa fa-pencil" matTooltip="Edit"></i>
+              <i [hidden]="!editState || requestToEdit?.key !== t.key" (click)="clearState()" class="fa fa-compress" matTooltip="Close edit"></i>
+              <i (click)="openDialog(t)" class="fa fa-archive" matTooltip="Move to archive"></i>
+
+          </td>
+        </tr>
+        <tr *ngIf="editState && requestToEdit.key == t.key">
+            <td><input type="date" [(ngModel)]="t.Date" name="Date" style="width:50px"></td>
+            <td><input type="text" [(ngModel)]="t.Buyer" name="Buyer" size="12"></td>
+            <td><input type="text" [(ngModel)]="t.Item" name="Item" size="12"></td>
+            <td><input type="text" [(ngModel)]="t.Supplier" name="Supplier" size="12"></td>
+            <td><input type="date" [(ngModel)]="t.OrderDate" name="OrderDate" style="width:50px"></td>
+            <td><input type="text" [(ngModel)]="t.TrackingNumber" name="TrackingNumber" size="12"></td>
+            <td><input type="textarea" [(ngModel)]="t.Notes" name="Notes" size="12"></td>
+            <td><input type="number" [(ngModel)]="t.OverdueDuration" name="OverdueTerm" style="width:50px"></td>
+            <td>
+              <button class="btn btn-outline-success btn-sm" type="submit" (click)="updateRequest(t)">Update</button>
+              <!-- <button class="btn btn-outline-danger btn-sm" (click)="openDialog(t)">Move to archive</button> -->
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="((archiveList | async)?.length!=0)&&showArchived">
+    <h3>Archived requests</h3>
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Request date</th>
+          <th>Buyer</th>
+          <th>Item of interest</th>
+          <th>Supplier</th>
+          <th>Order date</th>
+          <th>Tracking number</th>
+          <th>Notes</th>
+          <th>Overdue duration</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let t of archiveList | async">
+        <tr class="archived">
+          <td>{{ t.Date }}</td>
+          <td>{{ t.Buyer }}</td>
+          <td>{{ t.Item }}</td>
+          <td>{{ t.Supplier }}</td>
+          <td>{{ t.OrderDate }}</td>
+          <td>{{ t.TrackingNumber }}</td>
+          <td>{{ t.Notes }}</td>
+          <td>{{ t.OverdueDuration}}</td>
+          <td>
+            <button class="btn btn-secondary btn-sm" (click)="returnToActive(t)">Move to Active</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

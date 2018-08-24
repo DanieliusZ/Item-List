@@ -1,0 +1,36 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="col-md-3">
+        <!-- <label for="">Date</label> -->
+        <input
+          type="date"
+          class="form-control"
+          name="Date"
+          [(ngModel)]="Request.Date">
+      </div>
+      <div class="col-md-3">
+        <!-- <label for="">Buyer</label> -->
+        <input
+          placeholder="Buyer"
+          type="text"
+          class="form-control"
+          name="Buyer"
+          [(ngModel)]="Request.Buyer">
+      </div>
+      <div class="col-md-3">
+        <!-- <label for="">Interested in item</label> -->
+        <input
+          placeholder="Item of interest"
+          type="text"
+          class="form-control"
+          name="Item"
+          [(ngModel)]="Request.Item">
+      </div>
+      <div class="col-md-3 text-center">
+        <button type="submit" class="btn btn-outline-success w-50">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+

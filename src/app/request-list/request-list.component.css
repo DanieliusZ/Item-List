@@ -1,0 +1,29 @@
+.notResponded {
+  background-color: rgb(255, 253, 144);
+}
+
+.responded {
+  background-color: lightgreen;
+}
+
+.overdue {
+  background-color: rgb(255, 73, 73);
+}
+
+.fontChange {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.archived {
+  background-color: rgb(204, 204, 204);
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+i:hover, button {
+  cursor: pointer;
+}
